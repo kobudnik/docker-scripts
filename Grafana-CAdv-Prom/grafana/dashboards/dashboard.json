@@ -2,10 +2,10 @@
   "dashboard": {
     "id": null,
     "uid": null,
-    "title": "My Dashboard",
+    "title": "Testy",
     "panels": [
       {
-        "title": "Container CPU Usage",
+        "title": "Test CPU IMPORT JSON AUTOMATICALLY AYY",
         "targets": [
           {
             "expr": "sum by (name) (container_cpu_usage_seconds_total{container_label_com_docker_compose_project=\"myapp\"})"
