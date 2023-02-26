@@ -16,6 +16,19 @@ services:
       org_prometheus_starter: 'true'
       org_prometheus_starter_path: '/metrics'
 
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - '9100:9100'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -23,10 +36,12 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # - ./prometheus/prom_db:/var/lib/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
+
     depends_on:
-      - cadvisor
+      - node-exporter
     labels:
       org_prometheus_starter: 'true'
       org_prometheus_starter_port: '9090'
